@@ -13,9 +13,43 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
+        return $this->render('default/index.html.twig');
+    }
+
+    /**
+     * @Route("/blue", name="blue")
+     */
+    public function blueAction(Request $request)
+    {
+//        $cmd = 'whoami';
+//        $cmd = 'sudo /usr/local/bin/blink1-tool --list';
+        $cmd = 'sudo /usr/local/bin/blink1-tool -m 1000 --blue';
+//        $output = $returnVar = '';
+        $execReturn = exec($cmd, $output, $returnVar);
         return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
+//            'execReturn' => $execReturn,
+//            'output' => var_export($output, true),
+//            'returnVar' => var_export($returnVar, true),
         ]);
+    }
+
+    /**
+     * @Route("/green", name="green")
+     */
+    public function greenAction(Request $request)
+    {
+        $cmd = 'sudo /usr/local/bin/blink1-tool -m 1000 --green';
+        exec($cmd);
+        return $this->render('default/index.html.twig');
+    }
+
+    /**
+     * @Route("/red", name="red")
+     */
+    public function redAction(Request $request)
+    {
+        $cmd = 'sudo /usr/local/bin/blink1-tool -m 1000 --red';
+        exec($cmd);
+        return $this->render('default/index.html.twig');
     }
 }
