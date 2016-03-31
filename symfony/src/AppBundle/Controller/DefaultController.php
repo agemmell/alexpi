@@ -24,12 +24,12 @@ class DefaultController extends Controller
 //        $cmd = 'whoami';
 //        $cmd = 'sudo /usr/local/bin/blink1-tool --list';
         $cmd = 'sudo /usr/local/bin/blink1-tool -m 1000 --blue';
-//        $output = $returnVar = '';
+        $output = $returnVar = '';
         $execReturn = exec($cmd, $output, $returnVar);
         return $this->render('default/index.html.twig', [
-//            'execReturn' => $execReturn,
-//            'output' => var_export($output, true),
-//            'returnVar' => var_export($returnVar, true),
+            'execReturn' => $execReturn,
+            'output' => var_export($output, true),
+            'returnVar' => var_export($returnVar, true),
         ]);
     }
 
@@ -39,8 +39,13 @@ class DefaultController extends Controller
     public function greenAction(Request $request)
     {
         $cmd = 'sudo /usr/local/bin/blink1-tool -m 1000 --green';
-        exec($cmd);
-        return $this->render('default/index.html.twig');
+        $output = $returnVar = '';
+        $execReturn = exec($cmd, $output, $returnVar);
+        return $this->render('default/index.html.twig', [
+            'execReturn' => $execReturn,
+            'output' => var_export($output, true),
+            'returnVar' => var_export($returnVar, true),
+        ]);
     }
 
     /**
@@ -49,7 +54,12 @@ class DefaultController extends Controller
     public function redAction(Request $request)
     {
         $cmd = 'sudo /usr/local/bin/blink1-tool -m 1000 --red';
-        exec($cmd);
-        return $this->render('default/index.html.twig');
+        $output = $returnVar = '';
+        $execReturn = exec($cmd, $output, $returnVar);
+        return $this->render('default/index.html.twig', [
+            'execReturn' => $execReturn,
+            'output' => var_export($output, true),
+            'returnVar' => var_export($returnVar, true),
+        ]);
     }
 }
