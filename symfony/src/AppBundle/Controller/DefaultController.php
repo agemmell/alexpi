@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -16,50 +17,40 @@ class DefaultController extends Controller
         return $this->render('default/index.html.twig');
     }
 
-    /**
-     * @Route("/blue", name="blue")
-     */
-    public function blueAction(Request $request)
-    {
-//        $cmd = 'whoami';
-//        $cmd = 'sudo /usr/local/bin/blink1-tool --list';
-        $cmd = 'sudo /usr/local/bin/blink1-tool -m 1000 --blue';
-        $output = $returnVar = '';
-        $execReturn = exec($cmd, $output, $returnVar);
-        return $this->render('default/index.html.twig', [
-            'execReturn' => $execReturn,
-            'output' => var_export($output, true),
-            'returnVar' => var_export($returnVar, true),
-        ]);
-    }
 
     /**
-     * @Route("/green", name="green")
+     * @Route("/blink/{color}/{time}", name="blink")
+     * @param Request $request
+     * @param string $color
+     * @param int $time
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function greenAction(Request $request)
+    public function blinkAction(Request $request, $color, $time = 1000)
     {
-        $cmd = 'sudo /usr/local/bin/blink1-tool -m 1000 --green';
+        preg_match_all('/[0-9A-F]{2}/i', $color, $matches);
+        $hexColor = $matches[0];
+        $r = hexdec($hexColor[0]);
+        $g = hexdec($hexColor[1]);
+        $b = hexdec($hexColor[2]);
+        $time = intval($time);
+        $cmd = "sudo /usr/local/bin/blink1-tool -m $time --rgb=$r,$g,$b";
         $output = $returnVar = '';
         $execReturn = exec($cmd, $output, $returnVar);
-        return $this->render('default/index.html.twig', [
-            'execReturn' => $execReturn,
-            'output' => var_export($output, true),
-            'returnVar' => var_export($returnVar, true),
-        ]);
+
+        return new Response();
+    }
+    /**
+     * @Route("/off/", name="off")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function offAction(Request $request)
+    {
+        $cmd = "sudo /usr/local/bin/blink1-tool --off";
+        $output = $returnVar = '';
+        $execReturn = exec($cmd, $output, $returnVar);
+
+        return new Response();
     }
 
-    /**
-     * @Route("/red", name="red")
-     */
-    public function redAction(Request $request)
-    {
-        $cmd = 'sudo /usr/local/bin/blink1-tool -m 1000 --red';
-        $output = $returnVar = '';
-        $execReturn = exec($cmd, $output, $returnVar);
-        return $this->render('default/index.html.twig', [
-            'execReturn' => $execReturn,
-            'output' => var_export($output, true),
-            'returnVar' => var_export($returnVar, true),
-        ]);
-    }
 }

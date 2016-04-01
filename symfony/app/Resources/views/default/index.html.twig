@@ -2,18 +2,32 @@
 
 {% block stylesheets %}
 <style>
-
+ .button {
+     width: 75px;
+     height: 75px;
+     color: #000000;
+     cursor: pointer;
+     float: left;
+     margin: 20px;
+     border: 1px solid #000;
+ }
 </style>
 {% endblock %}
 
 {% block body %}
-<div id="">
-    <a href="{{ path('green') }}">green</a>
-    <a href="{{ path('blue') }}">blue</a>
-    <a href="{{ path('red') }}">red</a>
-    <p>{{ execReturn }}</p>
-    <p>{{ output }}</p>
-    <p>{{ returnVar }}</p>
-</div>
+
+    <div class="button" style="background-color: #00ff00;" onclick="blink('{{ path('blink', {'color': '00ff00', 'time':1000}) }}')">GREEN</div>
+    <div class="button" style="background-color: #0000ff;" onclick="blink('{{ path('blink', {'color': '0000ff', 'time':1000}) }}')">BLUE</div>
+    <div class="button" style="background-color: #ff0000;" onclick="blink('{{ path('blink', {'color': 'ff0000', 'time':1000}) }}')">RED</div>
+    <div class="button" onclick="blink('{{ path('off') }}')">OFF</div>
 {% endblock %}
 
+{% block javascripts %}
+<script>
+    function blink(url) {
+        var myRequest = new XMLHttpRequest();
+        myRequest.open("GET", url, true);
+        myRequest.send();
+    }
+</script>
+{% endblock %}
