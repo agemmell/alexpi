@@ -33,7 +33,10 @@ class DefaultController extends Controller
         $g = hexdec($hexColor[1]);
         $b = hexdec($hexColor[2]);
         $time = intval($time);
-        $cmd = "sudo /usr/local/bin/blink1-tool -m $time --rgb=$r,$g,$b";
+
+        $pathToBlinkTool = $this->container->getParameter('blinktoolpath');
+        $cmd = "sudo $pathToBlinkTool -m $time --rgb=$r,$g,$b";
+
         $output = $returnVar = '';
         $execReturn = exec($cmd, $output, $returnVar);
 
@@ -46,7 +49,9 @@ class DefaultController extends Controller
      */
     public function offAction(Request $request)
     {
-        $cmd = "sudo /usr/local/bin/blink1-tool --off";
+        $pathToBlinkTool = $this->container->getParameter('blinktoolpath');
+        $cmd = "sudo $pathToBlinkTool --off";
+
         $output = $returnVar = '';
         $execReturn = exec($cmd, $output, $returnVar);
 
