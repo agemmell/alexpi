@@ -1,33 +1,84 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-<style>
- .button {
-     width: 75px;
-     height: 75px;
-     color: #000000;
-     cursor: pointer;
-     float: left;
-     margin: 20px;
-     border: 1px solid #000;
- }
-</style>
+    <style>
+        .button {
+            width: 75px;
+            height: 75px;
+            color: #000000;
+            cursor: pointer;
+            float: left;
+            margin: 20px;
+            border: 1px solid #000;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
 
-    <div class="button" style="background-color: #00ff00;" onclick="blink('{{ path('blink', {'color': '00ff00', 'time':1000}) }}')">GREEN</div>
-    <div class="button" style="background-color: #0000ff;" onclick="blink('{{ path('blink', {'color': '0000ff', 'time':1000}) }}')">BLUE</div>
-    <div class="button" style="background-color: #ff0000;" onclick="blink('{{ path('blink', {'color': 'ff0000', 'time':1000}) }}')">RED</div>
     <div class="button" onclick="blink('{{ path('off') }}')">OFF</div>
+    <div id="blinkButtons"></div>
+
+    <audio id="audioPlayer" style="display: none;"></audio>
+    <div id="audioButtons"></div>
+
 {% endblock %}
 
 {% block javascripts %}
-<script>
-    function blink(url) {
-        var myRequest = new XMLHttpRequest();
-        myRequest.open("GET", url, true);
-        myRequest.send();
-    }
-</script>
+    <script>
+        var blinks = {{ blinks|json_encode()|raw }};
+        var sounds = {{ sounds|json_encode()|raw }};
+
+        window.onload = function () {
+            addBlinkButtons(blinks);
+            addAudioButtons(sounds);
+        };
+
+        function addBlinkButtons(blinks) {
+            var blinkButtons = document.getElementById('blinkButtons');
+
+            for (var i = 0; i < blinks.length; i++) {
+                var blink = blinks[i];
+
+                var blinkDiv = document.createElement('div');
+                blinkDiv.setAttribute('class', 'button');
+                blinkDiv.setAttribute('style', 'background-color:#' + blink.color + ';');
+                blinkDiv.setAttribute('onclick', 'blink(\'' + blink.url + '\')');
+
+                var name = document.createTextNode(blink.name);
+                blinkDiv.appendChild(name);
+
+                blinkButtons.appendChild(blinkDiv);
+            }
+        }
+
+        function addAudioButtons(sounds) {
+            var audioButtons = document.getElementById('audioButtons');
+
+            for (var i = 0; i < sounds.length; i++) {
+                var sound = sounds[i];
+
+                var soundDiv = document.createElement('div');
+                soundDiv.setAttribute('class', 'button');
+                soundDiv.setAttribute('onclick', 'playSound(\'' + sound.path + '\')');
+
+                var name = document.createTextNode(sound.name);
+                soundDiv.appendChild(name);
+
+                audioButtons.appendChild(soundDiv);
+            }
+        }
+
+        function blink(url) {
+            var myRequest = new XMLHttpRequest();
+            myRequest.open("GET", url, true);
+            myRequest.send();
+        }
+
+        function playSound(sound) {
+            audioplayer = document.getElementById('audioPlayer');
+            audioplayer.src = sound;
+            audioplayer.play()
+        }
+    </script>
 {% endblock %}

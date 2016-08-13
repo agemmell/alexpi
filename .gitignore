@@ -1,1 +1,4 @@
 .idea
+/symfony/web/sounds/*
+!/symfony/web/sounds/.gitkeep
+/bin/blink1-tool

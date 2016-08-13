@@ -14,7 +14,15 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return $this->render('default/index.html.twig');
+        $blinks = $this->getParameter('blinks');
+        for ($x = 0; $x < count($blinks); $x++) {
+            $blinks[$x]['url'] = $this->generateUrl('blink', [
+                'color' => $blinks[$x]['color'],
+                'time' => $blinks[$x]['time']
+            ]);
+        }
+        $sounds = $this->getParameter('sounds');
+        return $this->render('default/index.html.twig', ['blinks' => $blinks, 'sounds' => $sounds]);
     }
 
 
@@ -42,6 +50,7 @@ class DefaultController extends Controller
 
         return new Response();
     }
+
     /**
      * @Route("/off/", name="off")
      * @param Request $request
@@ -49,7 +58,7 @@ class DefaultController extends Controller
      */
     public function offAction(Request $request)
     {
-        $pathToBlinkTool = $this->container->getParameter('blinktoolpath');
+        $pathToBlinkTool = $this->getParameter('blinktoolpath');
         $cmd = "sudo $pathToBlinkTool --off";
 
         $output = $returnVar = '';

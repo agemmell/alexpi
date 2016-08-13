@@ -19,3 +19,23 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     blinktoolpath: /usr/local/bin/blink1-tool
+    blinks:
+        -
+          name: GREEN
+          color: 00ff00
+          time: 1000
+        -
+          name: BLUE
+          color: 0000ff
+          time: 1000
+        -
+          name: RED
+          color: ff0000
+          time: 1000
+    sounds:
+        -
+          name: Ha ha!
+          path: /sounds/haha.mp3
+        -
+          name: DOH!
+          path: /sounds/homer/doh1.mp3
