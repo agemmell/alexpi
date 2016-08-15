@@ -1,26 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    <style>
-        .button {
-            width: 75px;
-            height: 75px;
-            color: #000000;
-            cursor: pointer;
-            float: left;
-            margin: 20px;
-            border: 1px solid #000;
-        }
-    </style>
-{% endblock %}
+{% block stylesheets %}{% endblock %}
 
 {% block body %}
 
-    <div class="button" onclick="blink('{{ path('off') }}')">OFF</div>
-    <div id="blinkButtons"></div>
+    <div class="row">
+        <div class="col-md-12">
+
+        </div>
+    </div>
+
+    <div class="btn-group btn-group-lg" role="group" aria-label="..." id="blinkButtons">
+        <button class="btn btn-default btn-lg" onclick="blink('{{ path('off') }}')">OFF</button>
+    </div>
 
     <audio id="audioPlayer" style="display: none;"></audio>
-    <div id="audioButtons"></div>
+    <div class="btn-group btn-group-lg" role="group" aria-label="..." id="audioButtons"></div>
 
 {% endblock %}
 
@@ -40,15 +35,20 @@
             for (var i = 0; i < blinks.length; i++) {
                 var blink = blinks[i];
 
-                var blinkDiv = document.createElement('div');
-                blinkDiv.setAttribute('class', 'button');
-                blinkDiv.setAttribute('style', 'background-color:#' + blink.color + ';');
-                blinkDiv.setAttribute('onclick', 'blink(\'' + blink.url + '\')');
+                var blinkButton = document.createElement('button');
+                blinkButton.setAttribute('class', 'btn btn-default btn-lg');
+                blinkButton.setAttribute('style', 'background-color:#' + blink.color + ';');
+                blinkButton.setAttribute('onclick', 'blink(\'' + blink.url + '\')');
 
                 var name = document.createTextNode(blink.name);
-                blinkDiv.appendChild(name);
+                blinkButton.appendChild(name);
 
-                blinkButtons.appendChild(blinkDiv);
+//                var blinkDiv = document.createElement('div');
+//                blinkDiv.setAttribute('class', 'col-md-1');
+//                blinkDiv.appendChild(blinkButton);
+//                blinkButtons.appendChild(blinkDiv);
+
+                blinkButtons.appendChild(blinkButton);
             }
         }
 
@@ -58,14 +58,19 @@
             for (var i = 0; i < sounds.length; i++) {
                 var sound = sounds[i];
 
-                var soundDiv = document.createElement('div');
-                soundDiv.setAttribute('class', 'button');
-                soundDiv.setAttribute('onclick', 'playSound(\'' + sound.path + '\')');
+                var soundButton = document.createElement('button');
+                soundButton.setAttribute('class', 'btn btn-default btn-lg');
+                soundButton.setAttribute('onclick', 'playSound(\'' + sound.path + '\')');
 
                 var name = document.createTextNode(sound.name);
-                soundDiv.appendChild(name);
+                soundButton.appendChild(name);
 
-                audioButtons.appendChild(soundDiv);
+//                var soundDiv = document.createElement('div');
+//                soundDiv.setAttribute('class', 'col-md-1');
+//                soundDiv.appendChild(soundButton);
+//                audioButtons.appendChild(soundDiv);
+
+                audioButtons.appendChild(soundButton);
             }
         }
 
